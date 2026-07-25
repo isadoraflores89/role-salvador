@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rolê Salvador — por Apezinho do Rio Vermelho</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* identidade visual — Apezinho do Rio Vermelho */
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Inter",system-ui,-apple-system,sans-serif;
+    --mar:#0e807a; --mar-escuro:#0a5a54; --agua:#14b3a6;
+    --azul:#2474c4; --azul-escuro:#195a9c; --verde:#3a9d5d;
+    --rosa:#e86a9e; --magenta:#b0238c; --amarelo:#f3bd1f; --amarelo-esc:#d99512;
+    --areia:#e6f4f2; --creme:#f5fbfb; --tinta:#163330; --cinza:#5b6b69; --borda:#d4e8e5;
+    /* apelidos usados no layout */
+    --azulejo:var(--mar); --azulejo-esc:var(--mar-escuro); --sol:var(--amarelo); --sol-esc:var(--amarelo-esc);
+    --coral:var(--rosa); --roxo:var(--magenta); --papel:var(--creme); --papel2:var(--areia);
+    --sombra:0 6px 22px rgba(10,90,84,.12); --radius:16px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--sans);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(242,183,5,.10), transparent 40%),
+      radial-gradient(circle at 88% 4%, rgba(233,79,55,.08), transparent 42%),
+      var(--papel);
+    color:var(--tinta); line-height:1.5; padding-bottom:80px;
+  }
+  header{
+    background:linear-gradient(135deg,var(--azulejo-esc),var(--azulejo));
+    color:#fff; padding:26px 20px 20px; text-align:center; position:relative; overflow:hidden;
+  }
+  header::after{
+    content:""; position:absolute; inset:0; opacity:.14; pointer-events:none;
+    background-image:
+      linear-gradient(45deg,#fff 25%,transparent 25%,transparent 75%,#fff 75%),
+      linear-gradient(45deg,#fff 25%,transparent 25%,transparent 75%,#fff 75%);
+    background-size:22px 22px; background-position:0 0,11px 11px;
+  }
+  header h1{font-family:var(--serif);font-weight:500;font-size:2.1rem;letter-spacing:-.01em;position:relative;z-index:1;display:inline-flex;align-items:center;gap:10px}
+  header h1 .sol{color:var(--amarelo)}
+  header h1 .concha{font-size:1.7rem}
+  header p{opacity:.9;font-size:.95rem;margin-top:4px;position:relative;z-index:1}
+  header .atualizado{font-size:.72rem;opacity:.75;margin-top:7px;position:relative;z-index:1}
+  .wrap{max-width:920px;margin:0 auto;padding:0 16px}
+
+  .dias{display:flex;gap:8px;overflow-x:auto;padding:18px 16px 10px;margin:0 auto;max-width:920px;-webkit-overflow-scrolling:touch}
+  .dia{
+    flex:0 0 auto;background:#fff;border:2px solid transparent;border-radius:14px;
+    padding:9px 13px;text-align:center;cursor:pointer;box-shadow:var(--sombra);
+    min-width:60px;transition:.18s;user-select:none;position:relative;
+  }
+  .dia small{display:block;font-size:.68rem;text-transform:uppercase;color:var(--cinza);letter-spacing:.5px}
+  .dia b{font-size:1.15rem;color:var(--azulejo-esc)}
+  .dia .mes{font-size:.6rem;color:var(--cinza);text-transform:uppercase}
+  .dia.hoje{border-color:var(--sol)}
+  .dia.ativo{background:var(--azulejo);border-color:var(--azulejo)}
+  .dia.ativo small,.dia.ativo .mes{color:rgba(255,255,255,.85)}
+  .dia.ativo b{color:#fff}
+  .dia .pino{position:absolute;top:5px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--coral)}
+
+  .filtros{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;padding:6px 16px 4px}
+  .chip{border:1.5px solid var(--papel2);background:#fff;color:var(--tinta);padding:5px 13px;border-radius:999px;font-size:.82rem;cursor:pointer;transition:.15s;font-weight:600}
+  .chip[data-on="1"]{color:#fff;border-color:transparent}
+  .chip.c-musica[data-on="1"]{background:var(--azulejo)}
+  .chip.c-festa[data-on="1"]{background:var(--coral)}
+  .chip.c-teatro[data-on="1"]{background:var(--roxo)}
+  .chip.c-arte[data-on="1"]{background:var(--verde)}
+  .chip.c-feira[data-on="1"]{background:var(--sol-esc)}
+  .chip.c-popular[data-on="1"]{background:var(--azulejo-esc)}
+
+  .contador{text-align:center;color:var(--cinza);font-size:.85rem;margin:14px 0 4px;font-weight:600}
+  .lista{display:grid;gap:14px;margin-top:8px}
+  .secao{font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--coral);margin:8px 2px -2px;display:flex;align-items:center;gap:8px}
+  .secao.fixo{color:var(--cinza)}
+  .secao::after{content:"";flex:1;height:1px;background:currentColor;opacity:.25}
+  .card{background:#fff;border-radius:var(--radius);box-shadow:var(--sombra);padding:16px 16px 30px;border-left:6px solid var(--azulejo);position:relative;animation:sobe .3s ease both}
+  @keyframes sobe{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .card.c-musica{border-color:var(--azulejo)} .card.c-festa{border-color:var(--coral)}
+  .card.c-teatro{border-color:var(--roxo)} .card.c-arte{border-color:var(--verde)}
+  .card.c-feira{border-color:var(--sol-esc)} .card.c-popular{border-color:var(--azulejo-esc)}
+  .card .topo{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+  .card h3{font-family:var(--serif);font-weight:500;font-size:1.18rem;color:var(--mar-escuro);line-height:1.2;letter-spacing:-.01em}
+  .tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#fff;padding:3px 9px;border-radius:999px;white-space:nowrap;flex:0 0 auto}
+  .tag.c-musica{background:var(--azulejo)} .tag.c-festa{background:var(--coral)}
+  .tag.c-teatro{background:var(--roxo)} .tag.c-arte{background:var(--verde)}
+  .tag.c-feira{background:var(--sol-esc)} .tag.c-popular{background:var(--azulejo-esc)}
+  .meta{display:flex;flex-wrap:wrap;gap:12px;margin-top:9px;color:var(--cinza);font-size:.85rem}
+  .meta span{display:inline-flex;align-items:center;gap:5px}
+  .desc{margin-top:9px;font-size:.92rem;color:#3a3a45}
+  .acoes{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
+  .acoes a{text-decoration:none;font-size:.83rem;font-weight:700;padding:7px 14px;border-radius:10px;background:var(--papel2);color:var(--azulejo-esc);transition:.15s}
+  .acoes a.prim{background:var(--sol);color:#5a3d00}
+  .acoes a:hover{filter:brightness(.96);transform:translateY(-1px)}
+  .selo{position:absolute;bottom:10px;right:14px;font-size:.68rem;color:var(--cinza);font-style:italic}
+  .vazio{text-align:center;padding:40px 20px;color:var(--cinza)}
+  .vazio b{font-size:1.1rem;color:var(--azulejo-esc);display:block;margin-bottom:6px}
+
+  .fab{position:fixed;bottom:22px;right:22px;background:var(--coral);color:#fff;border:none;width:60px;height:60px;border-radius:50%;font-size:1.9rem;cursor:pointer;box-shadow:0 8px 22px rgba(233,79,55,.45);z-index:30;line-height:1;transition:.15s}
+  .fab:hover{transform:scale(1.06)}
+  .modal{position:fixed;inset:0;background:rgba(15,76,117,.5);display:none;align-items:flex-end;justify-content:center;z-index:40}
+  .modal.on{display:flex}
+  .painel{background:var(--papel);width:100%;max-width:520px;border-radius:20px 20px 0 0;padding:22px 20px 26px;max-height:92vh;overflow:auto;animation:sobe .25s}
+  .painel h2{color:var(--azulejo-esc);margin-bottom:6px}
+  .painel .dica{font-size:.8rem;color:var(--cinza);margin-bottom:8px}
+  .painel label{display:block;font-size:.8rem;font-weight:700;color:var(--cinza);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.4px}
+  .painel input,.painel select,.painel textarea{width:100%;padding:11px 12px;border:1.5px solid var(--papel2);border-radius:11px;font:inherit;background:#fff}
+  .painel textarea{min-height:60px;resize:vertical}
+  .tipo-tog{display:flex;gap:8px;margin-top:4px}
+  .tipo-tog button{flex:1;padding:9px;border:1.5px solid var(--papel2);background:#fff;border-radius:10px;font:inherit;font-weight:700;cursor:pointer;color:var(--cinza)}
+  .tipo-tog button.on{background:var(--azulejo);color:#fff;border-color:var(--azulejo)}
+  .dias-check{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+  .dias-check label{margin:0;display:inline-flex;align-items:center;gap:4px;background:#fff;border:1.5px solid var(--papel2);padding:6px 10px;border-radius:9px;cursor:pointer;text-transform:none;font-size:.85rem;color:var(--tinta)}
+  .dias-check input{width:auto}
+  .painel .row{display:flex;gap:10px}
+  .painel .row>div{flex:1}
+  .btns{display:flex;gap:10px;margin-top:20px}
+  .btns button{flex:1;padding:13px;border:none;border-radius:12px;font:inherit;font-weight:700;cursor:pointer}
+  .btns .salvar{background:var(--azulejo);color:#fff}
+  .btns .cancelar{background:var(--papel2);color:var(--tinta)}
+  .del{background:none;border:none;color:var(--coral);font-size:.78rem;cursor:pointer;margin-top:10px;font-weight:700}
+  footer{text-align:center;color:var(--cinza);font-size:.82rem;padding:30px 16px 6px;line-height:1.7}
+  footer .credito{font-family:var(--serif);font-size:1rem;color:var(--mar-escuro);display:inline-flex;align-items:center;gap:6px}
+  footer a{color:var(--mar);font-weight:700;text-decoration:none;border-bottom:2px solid var(--agua)}
+  footer a:hover{color:var(--mar-escuro)}
+  footer .coracao{color:var(--rosa)}
+</style>
+</head>
+<body>
+<header>
+  <h1><span class="concha">🐚</span> Rolê <span class="sol">Salvador</span></h1>
+  <p>a agenda cultural da cidade, dia a dia 🎭🥁</p>
+  <div class="atualizado" id="atualizado"></div>
+</header>
+
+<div class="dias" id="dias"></div>
+<div class="filtros" id="filtros"></div>
+<div class="wrap">
+  <div class="contador" id="contador"></div>
+  <div class="lista" id="lista"></div>
+</div>
+
+<button class="fab" id="fab" title="Adicionar rolê">+</button>
+
+<div class="modal" id="modal">
+  <div class="painel">
+    <h2 id="modalTitulo">Novo rolê</h2>
+    <div class="dica">Adicione um evento com data marcada ou um rolê que se repete toda semana.</div>
+    <label>Nome do evento</label>
+    <input id="f-nome" placeholder="Ex: Show na Concha Acústica">
+    <div class="row">
+      <div><label>Categoria</label>
+        <select id="f-cat">
+          <option value="musica">Música</option>
+          <option value="festa">Festa / Rolê</option>
+          <option value="teatro">Teatro / Cinema</option>
+          <option value="arte">Arte / Museu</option>
+          <option value="feira">Feira / Gastronomia</option>
+          <option value="popular">Cultura Popular</option>
+        </select>
+      </div>
+      <div><label>Horário</label><input id="f-hora" placeholder="19h"></div>
+    </div>
+    <label>Quando?</label>
+    <div class="tipo-tog">
+      <button id="tog-data" class="on">📅 Data marcada</button>
+      <button id="tog-semana">🔁 Toda semana</button>
+    </div>
+    <div id="bloco-data"><label>Data</label><input type="date" id="f-data"></div>
+    <div id="bloco-semana" style="display:none"><label>Dias da semana</label><div class="dias-check" id="f-dias"></div></div>
+    <label>Local</label>
+    <input id="f-local" placeholder="Ex: Concha Acústica">
+    <label>Descrição</label>
+    <textarea id="f-desc" placeholder="O que rola por lá..."></textarea>
+    <div class="row">
+      <div><label>Link (ingresso/insta)</label><input id="f-link" placeholder="https://..."></div>
+      <div><label>Preço</label><input id="f-preco" placeholder="Grátis / R$45"></div>
+    </div>
+    <button class="del" id="f-del" style="display:none">🗑 Excluir este rolê</button>
+    <div class="btns">
+      <button class="cancelar" id="f-cancelar">Cancelar</button>
+      <button class="salvar" id="f-salvar">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span class="credito">🐚 Feito com <span class="coracao">amor</span> na Bahia por
+    <a href="https://apezinhodorv.com.br" target="_blank" rel="noopener">Apezinho do RV</a></span><br>
+  Toque no <b style="color:var(--rosa)">+</b> pra adicionar seus rolês — eles ficam salvos no seu aparelho.
+</footer>
+
+<script>
+const DIAS = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+const DIAS_LONGO = ['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
+const MESES = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+const CATS = {musica:'Música',festa:'Festa',teatro:'Teatro',arte:'Arte',feira:'Feira',popular:'Popular'};
+
+// Data de referência = dia em que a agenda foi atualizada pela última vez.
+const HOJE_ISO = '2026-07-25';
+const DIAS_MOSTRAR = 14;
+
+// ===== Eventos datados reais (atualizados 25/07/2026) =====
+const DATADOS = [
+  {n:"Ritchie — 'E a Vida Continua'", cat:"musica", data:"2026-07-26", hora:"19h", local:"Concha Acústica — Campo Grande", preco:"A partir de R$45",
+   desc:"Encerramento da temporada do projeto Concha para Todos, com o hit 'Menina Veneno' e a turnê nova.",
+   link:"https://www.salvadordabahia.com/eventos/o-que-ta-rolando-em-salvador-de-24-a-26-de-julho-de-2026/"},
+  {n:"Show ANCESTRANÇAS", cat:"popular", data:"2026-07-26", hora:"18h30", local:"Praça Maria Felipa — Comércio", preco:"Grátis",
+   desc:"Larissa Luz, Zezé Motta, Mariene de Castro, Melly, Karol Conká e MC Tha juntas num espetáculo sobre ancestralidade negra.",
+   link:"https://www.salvadordabahia.com/eventos/o-que-ta-rolando-em-salvador-de-24-a-26-de-julho-de-2026/"},
+  {n:"Jorge pra Sempre Verão", cat:"teatro", data:"2026-07-26", hora:"19h", local:"CAIXA Cultural Salvador — Centro", preco:"Consultar",
+   desc:"Homenagem a Jorge Amado em cena na CAIXA Cultural.",
+   link:"https://www.salvadordabahia.com/eventos/o-que-ta-rolando-em-salvador-de-24-a-26-de-julho-de-2026/"},
+  {n:"Torto Arado — O Musical", cat:"teatro", data:"2026-07-26", hora:"16h", local:"Teatro do Trapiche Barnabé — Comércio", preco:"Consultar",
+   desc:"Últimas apresentações da adaptação do romance de Itamar Vieira Junior.",
+   link:"https://www.salvadordabahia.com/eventos/o-que-ta-rolando-em-salvador-de-24-a-26-de-julho-de-2026/"},
+  {n:"Festival da Cultura Japonesa", cat:"feira", data:"2026-07-26", hora:"o dia todo", local:"Salvador Norte Shopping", preco:"Grátis",
+   desc:"Gastronomia, animê, apresentações e cultura japonesa. Último dia.",
+   link:"https://www.salvadordabahia.com/eventos/o-que-ta-rolando-em-salvador-de-24-a-26-de-julho-de-2026/"},
+  {n:"OSBA de Volta ao TCA", cat:"musica", data:"2026-07-25", hora:"consultar", local:"Teatro Castro Alves", preco:"Consultar",
+   desc:"Orquestra Sinfônica da Bahia celebra o retorno à sala principal do TCA.",
+   link:"https://www.ba.gov.br/tca/"},
+  {n:"O Inspetor Geral", cat:"teatro", data:"2026-07-25", hora:"15h", local:"Teatro Molière — Aliança Francesa", preco:"Grátis",
+   desc:"Clássico de Gógol encenado no Teatro Molière.",
+   link:"https://www.salvadordabahia.com/eventos/o-que-ta-rolando-em-salvador-de-24-a-26-de-julho-de-2026/"},
+];
+
+// ===== Rolês recorrentes (fixos da cidade) =====
+const FIXOS = [
+  {n:"Terça da Bênção no Pelô", cat:"musica", dias:[2], hora:"a partir das 18h", local:"Pelourinho", preco:"Vários palcos grátis",
+   desc:"A terça mais famosa da cidade: Olodum, blocos afro e bandas pelas ladeiras do Centro Histórico.",
+   link:"https://www.google.com/search?q=ter%C3%A7a+da+ben%C3%A7%C3%A3o+pelourinho+programa%C3%A7%C3%A3o"},
+  {n:"Gerônimo — Ladeira da Preguiça", cat:"musica", dias:[2], hora:"19h", local:"Pelourinho", preco:"Grátis",
+   desc:"Ícone da MPB baiana em apresentação tradicional nas terças do Centro Histórico.",
+   link:"https://www.instagram.com/geronimooficial/"},
+  {n:"Jam no MAM", cat:"musica", dias:[6], hora:"18h", local:"MAM — Solar do Unhão", preco:"Grátis",
+   desc:"Sábado de jazz e improviso à beira da Baía de Todos os Santos, no jardim do Museu de Arte Moderna.",
+   link:"https://www.instagram.com/mam.bahia/"},
+  {n:"Pôr do sol no Solar do Unhão", cat:"arte", dias:[0,6], hora:"16h–18h", local:"Solar do Unhão", preco:"Grátis",
+   desc:"Um dos mirantes mais bonitos da cidade. Arte, mar e o sol caindo na baía.",
+   link:"https://www.google.com/search?q=solar+do+unh%C3%A3o+salvador"},
+  {n:"Feira de São Joaquim", cat:"feira", dias:[1,2,3,4,5,6], hora:"6h–17h", local:"São Joaquim", preco:"Grátis",
+   desc:"A maior feira popular da Bahia: ervas, comida, artesanato e cultura de terreiro.",
+   link:"https://www.google.com/search?q=feira+de+s%C3%A3o+joaquim+salvador"},
+  {n:"Rolê no Rio Vermelho", cat:"festa", dias:[4,5,6], hora:"a partir das 20h", local:"Largo da Mariquita / Sta. Ana", preco:"Varia",
+   desc:"Acarajé da Dinha e da Cira, bares, música ao vivo e o point boêmio da cidade.",
+   link:"https://www.google.com/search?q=rio+vermelho+salvador+bares+m%C3%BAsica+ao+vivo"},
+  {n:"Programação do TCA", cat:"teatro", dias:[3,4,5,6,0], hora:"consultar", local:"Teatro Castro Alves", preco:"Varia",
+   desc:"Shows, dança, orquestra e a Concha Acústica. Sempre tem algo grande no maior teatro do Nordeste.",
+   link:"https://www.ba.gov.br/tca/"},
+  {n:"Teatro Vila Velha", cat:"teatro", dias:[4,5,6,0], hora:"consultar", local:"Passeio Público", preco:"Varia",
+   desc:"Casa histórica da cena teatral e musical independente da Bahia.",
+   link:"https://www.teatrovilavelha.com.br/"},
+  {n:"Pelourinho Dia e Noite", cat:"popular", dias:[0,1,2,3,4,5,6], hora:"o dia todo", local:"Centro Histórico", preco:"Grátis",
+   desc:"Igrejas, museus, capoeira na rua e ateliês. Base de qualquer rolê cultural em Salvador.",
+   link:"https://pelourinhodiaenoite.salvador.ba.gov.br/"},
+  {n:"Mercado Modelo", cat:"feira", dias:[1,2,3,4,5,6], hora:"9h–18h", local:"Comércio / Cairu", preco:"Grátis",
+   desc:"Artesanato baiano, samba de roda no almoço e vista pra Cidade Baixa.",
+   link:"https://www.google.com/search?q=mercado+modelo+salvador"},
+  {n:"Palacete das Artes / Rodin", cat:"arte", dias:[2,3,4,5,6,0], hora:"13h–18h", local:"Graça", preco:"Grátis",
+   desc:"Exposições em um palacete do início do séc. XX, com jardim lindo pra respirar arte.",
+   link:"https://www.google.com/search?q=palacete+das+artes+salvador"},
+  {n:"MAM-Bahia", cat:"arte", dias:[2,3,4,5,6,0], hora:"10h–18h", local:"Solar do Unhão — Av. Contorno", preco:"Grátis",
+   desc:"Arte moderna, jardim de esculturas e um dos pores do sol mais bonitos da Baía de Todos-os-Santos.",
+   link:"https://www.instagram.com/mam.bahia/"},
+  {n:"Museu de Arte Contemporânea (MAC)", cat:"arte", dias:[2,3,4,5,6,0], hora:"10h–20h", local:"Graça", preco:"Grátis",
+   desc:"Exposições contemporâneas em espaço amplo e acessível.",
+   link:"https://www.instagram.com/mac_bahia/"},
+  {n:"Casa do Carnaval da Bahia", cat:"popular", dias:[2,3,4,5,6,0], hora:"9h–17h", local:"Pelourinho", preco:"R$20 / R$10 · grátis 4ª",
+   desc:"A história do Carnaval baiano com fantasias, instrumentos e projeções imersivas.",
+   link:"https://www.google.com/search?q=Casa+do+Carnaval+da+Bahia+ingressos"},
+  {n:"Fundação Casa de Jorge Amado", cat:"arte", dias:[1,2,3,4,5,6], hora:"10h–18h (sáb até 16h)", local:"Largo do Pelourinho", preco:"Grátis às quartas",
+   desc:"Livros, fotos e objetos do maior escritor baiano, no coração do Pelô.",
+   link:"https://www.google.com/search?q=Funda%C3%A7%C3%A3o+Casa+de+Jorge+Amado+Pelourinho"},
+  {n:"Casa do Rio Vermelho", cat:"arte", dias:[2,3,4,5,6,0], hora:"9h–17h", local:"Rua Alagoinhas, 33 — Rio Vermelho", preco:"R$20 / R$10",
+   desc:"A casa onde viveram Jorge Amado e Zélia Gattai, hoje espaço interativo cheio de memória e cor.",
+   link:"https://www.google.com/search?q=Casa+do+Rio+Vermelho+Jorge+Amado+ingressos"},
+  {n:"Museu Náutico da Bahia", cat:"arte", dias:[2,3,4,5,6,0], hora:"9h–18h", local:"Farol da Barra", preco:"Ingresso no local",
+   desc:"Peças de naufrágios e a história da marinha, dentro do Farol da Barra à beira-mar.",
+   link:"https://visite.museus.gov.br/instituicoes/museu-nautico-da-bahia-2/"},
+];
+
+// ===== util de data (sem fuso, parse manual) =====
+function parseISO(s){const[a,m,d]=s.split('-').map(Number);return new Date(a,m-1,d)}
+function toISO(dt){return dt.getFullYear()+'-'+String(dt.getMonth()+1).padStart(2,'0')+'-'+String(dt.getDate()).padStart(2,'0')}
+function addDias(iso,n){const dt=parseISO(iso);dt.setDate(dt.getDate()+n);return toISO(dt)}
+
+let selData = HOJE_ISO;
+let cats = new Set(Object.keys(CATS));
+const KEY = 'role-salvador-eventos';
+let editandoId=null, tipoNovo='data';
+
+function meus(){try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}}
+function salvarMeus(a){localStorage.setItem(KEY,JSON.stringify(a))}
+
+// eventos que caem numa data ISO
+function eventosDe(iso){
+  const dt=parseISO(iso), wd=dt.getDay();
+  const list=[];
+  [...DATADOS.map((e,i)=>({...e,_id:'dat'+i,_datado:true})),
+   ...meus().map(e=>({...e,_meu:true}))].forEach(e=>{
+    if(e.data && e.data===iso) list.push({...e,_datado:true});
+    else if(e.dias && e.dias.includes(wd)) list.push(e);
+  });
+  FIXOS.forEach((e,i)=>{ if(e.dias.includes(wd)) list.push({...e,_id:'fix'+i,_fixo:true}); });
+  return list;
+}
+function temEventoDatado(iso){
+  return DATADOS.some(e=>e.data===iso) || meus().some(e=>e.data===iso);
+}
+
+function renderTopo(){
+  const dt=parseISO(HOJE_ISO);
+  document.getElementById('atualizado').textContent =
+    'agenda atualizada em '+dt.getDate()+' de '+['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'][dt.getMonth()];
+}
+
+function renderDias(){
+  const el=document.getElementById('dias'); el.innerHTML='';
+  for(let k=0;k<DIAS_MOSTRAR;k++){
+    const iso=addDias(HOJE_ISO,k), dt=parseISO(iso);
+    const div=document.createElement('div');
+    div.className='dia'+(iso===HOJE_ISO?' hoje':'')+(iso===selData?' ativo':'');
+    div.innerHTML=`<small>${k===0?'Hoje':(k===1?'Amanhã':DIAS[dt.getDay()])}</small>`+
+                  `<b>${dt.getDate()}</b><span class="mes">${MESES[dt.getMonth()]}</span>`+
+                  (temEventoDatado(iso)?'<span class="pino"></span>':'');
+    div.onclick=()=>{selData=iso;renderDias();render()};
+    el.appendChild(div);
+  }
+}
+
+function renderFiltros(){
+  const el=document.getElementById('filtros'); el.innerHTML='';
+  for(const[k,v]of Object.entries(CATS)){
+    const c=document.createElement('button');
+    c.className='chip c-'+k; c.textContent=v; c.dataset.on=cats.has(k)?'1':'0';
+    c.onclick=()=>{cats.has(k)?cats.delete(k):cats.add(k);if(cats.size===0)cats.add(k);renderFiltros();render()};
+    el.appendChild(c);
+  }
+}
+
+function render(){
+  const lista=document.getElementById('lista'); lista.innerHTML='';
+  const dt=parseISO(selData);
+  let evs=eventosDe(selData).filter(e=>cats.has(e.cat));
+  const datados=evs.filter(e=>e._datado), fixos=evs.filter(e=>!e._datado);
+  const rot = selData===HOJE_ISO?'Hoje':(selData===addDias(HOJE_ISO,1)?'Amanhã':DIAS_LONGO[dt.getDay()]);
+  document.getElementById('contador').textContent =
+    `${rot}, ${dt.getDate()}/${String(dt.getMonth()+1).padStart(2,'0')} · ${evs.length} rolê${evs.length!==1?'s':''}`;
+
+  if(evs.length===0){
+    lista.innerHTML=`<div class="vazio"><b>Nada marcado nesse dia 😌</b>Ajuste os filtros ou toque no + pra adicionar um rolê.</div>`;
+    return;
+  }
+  if(datados.length){ const s=document.createElement('div');s.className='secao';s.textContent='🎟 Com data marcada';lista.appendChild(s);
+    datados.forEach(e=>lista.appendChild(card(e))); }
+  if(fixos.length){ const s=document.createElement('div');s.className='secao fixo';s.textContent='🔁 Sempre rola';lista.appendChild(s);
+    fixos.forEach(e=>lista.appendChild(card(e))); }
+}
+
+function card(e){
+  const c=document.createElement('div'); c.className='card c-'+e.cat;
+  let selo='';
+  if(e._fixo) selo='toda '+e.dias.map(d=>DIAS[d]).join('·');
+  else if(e._datado) selo='evento único';
+  c.innerHTML=`
+    <div class="topo"><h3>${esc(e.n)}</h3><span class="tag c-${e.cat}">${CATS[e.cat]}</span></div>
+    <div class="meta">
+      ${e.hora?`<span>🕐 ${esc(e.hora)}</span>`:''}
+      ${e.local?`<span>📍 ${esc(e.local)}</span>`:''}
+      ${e.preco?`<span>🎟 ${esc(e.preco)}</span>`:''}
+    </div>
+    ${e.desc?`<div class="desc">${esc(e.desc)}</div>`:''}
+    <div class="acoes">
+      ${e.link?`<a class="prim" href="${esc(e.link)}" target="_blank" rel="noopener">Ver / Ingressos ↗</a>`:''}
+      <a href="https://www.google.com/maps/search/${encodeURIComponent((e.local||'')+' Salvador BA')}" target="_blank" rel="noopener">Como chegar 🗺</a>
+      ${e._meu?`<a href="#" data-edit="${e._id}">Editar ✎</a>`:''}
+    </div>
+    ${selo?`<span class="selo">${selo}</span>`:''}`;
+  c.querySelectorAll('[data-edit]').forEach(a=>a.onclick=ev=>{ev.preventDefault();abrirModal(a.dataset.edit)});
+  return c;
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+
+// ===== modal =====
+const modal=document.getElementById('modal');
+function montaDiasCheck(){const el=document.getElementById('f-dias');el.innerHTML='';DIAS.forEach((d,i)=>{const l=document.createElement('label');l.innerHTML=`<input type="checkbox" value="${i}"> ${d}`;el.appendChild(l)})}
+function setTipo(t){tipoNovo=t;
+  document.getElementById('tog-data').classList.toggle('on',t==='data');
+  document.getElementById('tog-semana').classList.toggle('on',t==='semana');
+  document.getElementById('bloco-data').style.display=t==='data'?'block':'none';
+  document.getElementById('bloco-semana').style.display=t==='semana'?'block':'none';
+}
+document.getElementById('tog-data').onclick=()=>setTipo('data');
+document.getElementById('tog-semana').onclick=()=>setTipo('semana');
+
+function abrirModal(id){
+  editandoId=id||null;
+  document.getElementById('modalTitulo').textContent=id?'Editar rolê':'Novo rolê';
+  document.getElementById('f-del').style.display=id?'block':'none';
+  montaDiasCheck();
+  const g=x=>document.getElementById(x);
+  ['f-nome','f-hora','f-local','f-desc','f-link','f-preco'].forEach(x=>g(x).value='');
+  g('f-cat').value='musica'; g('f-data').value=selData;
+  if(id){
+    const e=meus().find(x=>x._id===id);
+    g('f-nome').value=e.n;g('f-cat').value=e.cat;g('f-hora').value=e.hora||'';g('f-local').value=e.local||'';
+    g('f-desc').value=e.desc||'';g('f-link').value=e.link||'';g('f-preco').value=e.preco||'';
+    if(e.data){setTipo('data');g('f-data').value=e.data;}
+    else{setTipo('semana');(e.dias||[]).forEach(d=>{const c=document.querySelector(`#f-dias input[value="${d}"]`);if(c)c.checked=true})}
+  } else setTipo('data');
+  modal.classList.add('on');
+}
+function fechar(){modal.classList.remove('on')}
+document.getElementById('fab').onclick=()=>abrirModal(null);
+document.getElementById('f-cancelar').onclick=fechar;
+modal.onclick=e=>{if(e.target===modal)fechar()};
+document.getElementById('f-salvar').onclick=()=>{
+  const g=x=>document.getElementById(x).value.trim();
+  const nome=g('f-nome'); if(!nome){alert('Dá um nome pro rolê 😉');return}
+  const obj={n:nome,cat:document.getElementById('f-cat').value,hora:g('f-hora'),local:g('f-local'),desc:g('f-desc'),link:g('f-link'),preco:g('f-preco')};
+  if(tipoNovo==='data'){const d=g('f-data');if(!d){alert('Escolhe a data');return}obj.data=d;obj.dias=null;}
+  else{const dias=[...document.querySelectorAll('#f-dias input:checked')].map(c=>+c.value);if(!dias.length){alert('Escolhe pelo menos um dia');return}obj.dias=dias;obj.data=null;}
+  const arr=meus();
+  if(editandoId){const i=arr.findIndex(x=>x._id===editandoId);if(i>=0)arr[i]={...arr[i],...obj};}
+  else{obj._id='meu'+Date.now();arr.push(obj);}
+  salvarMeus(arr);fechar();
+  if(obj.data)selData=obj.data;
+  renderDias();render();
+};
+document.getElementById('f-del').onclick=()=>{if(editandoId&&confirm('Excluir este rolê?')){salvarMeus(meus().filter(x=>x._id!==editandoId));fechar();renderDias();render();}};
+
+renderTopo(); renderDias(); renderFiltros(); render();
+</script>
+</body>
+</html>

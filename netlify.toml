@@ -1,0 +1,4 @@
+[build]
+  publish = "."
+
+# Mini-site estático (só o index.html) — sem funções, sem build.
