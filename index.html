@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rolê Salvador — por Apezinho do Rio Vermelho</title>
+<title>Agenda do Apezinho — o que rola em Salvador</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -46,7 +46,13 @@
   header h1 .sol{color:var(--amarelo)}
   header h1 .concha{font-size:1.7rem}
   header p{opacity:.9;font-size:.95rem;margin-top:4px;position:relative;z-index:1}
-  header .atualizado{font-size:.72rem;opacity:.75;margin-top:7px;position:relative;z-index:1}
+  header .atualizado{font-size:.72rem;opacity:.75;margin-top:5px;position:relative;z-index:1}
+  header .topo-credito{position:relative;z-index:1;margin-top:8px}
+  header .topo-credito a{color:#fff;font-weight:700;font-size:.82rem;text-decoration:none;border-bottom:1.5px solid var(--amarelo);padding-bottom:1px}
+  header .topo-credito a:hover{color:var(--amarelo)}
+  .filtros-preco{padding-top:0;margin-top:-2px;padding-bottom:8px}
+  .chip.preco{border-color:var(--amarelo)}
+  .chip.preco[data-on="1"]{background:var(--amarelo);color:#5a3d00;border-color:transparent}
   .wrap{max-width:920px;margin:0 auto;padding:0 16px}
 
   .dias{display:flex;gap:8px;overflow-x:auto;padding:18px 16px 10px;margin:0 auto;max-width:920px;-webkit-overflow-scrolling:touch}
@@ -155,13 +161,15 @@
 </head>
 <body>
 <header>
-  <h1><span class="concha">🐚</span> Rolê <span class="sol">Salvador</span></h1>
-  <p>a agenda cultural da cidade, dia a dia 🎭🥁</p>
+  <h1><span class="concha">🐚</span> Agenda do <span class="sol">Apezinho</span></h1>
+  <p>Acompanhe o que rola em Salvador 🎭🥁</p>
+  <div class="topo-credito"><a href="https://apezinhodorv.com.br" target="_blank" rel="noopener">feito por apezinhodorv.com.br</a></div>
   <div class="atualizado" id="atualizado"></div>
 </header>
 
 <div class="dias" id="dias"></div>
 <div class="filtros" id="filtros"></div>
+<div class="filtros filtros-preco" id="filtrosPreco"></div>
 <div class="wrap">
   <div class="contador" id="contador"></div>
   <div class="lista" id="lista"></div>
@@ -343,6 +351,7 @@ function addDias(iso,n){const dt=parseISO(iso);dt.setDate(dt.getDate()+n);return
 
 let selData = HOJE_ISO;
 let cats = new Set(Object.keys(CATS));
+let precoFiltro = 'todos';
 const KEY = 'role-salvador-eventos';
 let editandoId=null, tipoNovo='data';
 
@@ -395,10 +404,36 @@ function renderFiltros(){
   }
 }
 
+const PRECOS=[['todos','Todos'],['gratis','🆓 Grátis'],['30','Até R$30'],['50','Até R$50'],['100','Até R$100']];
+function precoInfo(p){
+  const s=(p||'').toLowerCase();
+  const free=/gr[aá]tis|gratuit|de gra[cç]a|free/.test(s);
+  const nums=(s.replace(/\d+ª/g,'').match(/\d+/g)||[]).map(Number);
+  const val=nums.length?Math.min(...nums):null;
+  return {free,val};
+}
+function precoPass(e){
+  const {free,val}=precoInfo(e.preco);
+  if(precoFiltro==='todos') return true;
+  if(precoFiltro==='gratis') return free;
+  if(free) return true;          // grátis sempre cabe em qualquer teto
+  if(val==null) return false;    // preço a consultar fica fora dos tetos
+  return val<=(+precoFiltro);
+}
+function renderPrecoFiltro(){
+  const el=document.getElementById('filtrosPreco'); el.innerHTML='';
+  PRECOS.forEach(([k,label])=>{
+    const c=document.createElement('button');
+    c.className='chip preco'; c.textContent=label; c.dataset.on=precoFiltro===k?'1':'0';
+    c.onclick=()=>{precoFiltro=k;renderPrecoFiltro();render()};
+    el.appendChild(c);
+  });
+}
+
 function render(){
   const lista=document.getElementById('lista'); lista.innerHTML='';
   const dt=parseISO(selData);
-  let evs=eventosDe(selData).filter(e=>cats.has(e.cat));
+  let evs=eventosDe(selData).filter(e=>cats.has(e.cat)).filter(precoPass);
   const datados=evs.filter(e=>e._datado), fixos=evs.filter(e=>!e._datado);
   const rot = selData===HOJE_ISO?'Hoje':(selData===addDias(HOJE_ISO,1)?'Amanhã':DIAS_LONGO[dt.getDay()]);
   document.getElementById('contador').textContent =
@@ -486,7 +521,7 @@ document.getElementById('f-salvar').onclick=()=>{
 };
 document.getElementById('f-del').onclick=()=>{if(editandoId&&confirm('Excluir este rolê?')){salvarMeus(meus().filter(x=>x._id!==editandoId));fechar();renderDias();render();}};
 
-renderTopo(); renderDias(); renderFiltros(); render();
+renderTopo(); renderDias(); renderFiltros(); renderPrecoFiltro(); render();
 </script>
 </body>
 </html>
