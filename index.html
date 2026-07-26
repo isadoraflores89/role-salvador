@@ -48,10 +48,6 @@
   .ic{width:1.05em;height:1.05em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.16em;flex:0 0 auto}
   header h1 .marca-icone .ic{width:1.7rem;height:1.7rem;stroke-width:1.5}
   .fab .ic{width:1.6rem;height:1.6rem;stroke-width:2.2}
-  .audiofab{position:fixed;bottom:24px;left:22px;background:#fff;color:var(--magenta);border:2px solid var(--magenta);width:52px;height:52px;border-radius:50%;cursor:pointer;box-shadow:var(--sombra);z-index:30;display:flex;align-items:center;justify-content:center;transition:.15s}
-  .audiofab .ic{width:1.5rem;height:1.5rem;stroke-width:2}
-  .audiofab.on{background:var(--magenta);color:#fff}
-  .audiofab:hover{transform:scale(1.06)}
   header p{opacity:.9;font-size:.95rem;margin-top:4px;position:relative;z-index:1}
   header .atualizado{font-size:.72rem;opacity:.75;margin-top:5px;position:relative;z-index:1}
   header .topo-credito{position:relative;z-index:1;margin-top:8px}
@@ -206,7 +202,6 @@
 <symbol id="ic-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></symbol>
 <symbol id="ic-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1l1-13M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></symbol>
 <symbol id="ic-star" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6L12 17l-5.3 2.6 1.1-6L3.4 9.4l6-.8z"/></symbol>
-<symbol id="ic-audio" viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 6a9 9 0 0 1 0 12"/></symbol>
 </defs></svg>
 <header>
   <h1><span class="marca-icone"><svg class="ic"><use href="#ic-sol"/></svg></span> Agenda do <span class="sol">Apezinho</span></h1>
@@ -236,7 +231,6 @@
   <div class="lista" id="lista"></div>
 </div>
 
-<button class="audiofab" id="audiofab" title="Audiodescrição (voz Luciana)" aria-label="Ativar audiodescrição" aria-pressed="false"><svg class="ic"><use href="#ic-audio"/></svg></button>
 <button class="fab" id="fab" title="Adicionar rolê"><svg class="ic"><use href="#ic-plus"/></svg></button>
 
 <div class="modal" id="modal">
@@ -557,7 +551,6 @@ function render(){
     datados.forEach(e=>lista.appendChild(card(e))); }
   if(fixos.length){ const s=document.createElement('div');s.className='secao fixo';s.innerHTML='<svg class="ic"><use href="#ic-repeat"/></svg> Sempre rola';lista.appendChild(s);
     fixos.forEach(e=>lista.appendChild(card(e))); }
-  if(audioOn) falarAgenda();
 }
 
 function card(e){
@@ -631,51 +624,6 @@ document.getElementById('f-salvar').onclick=()=>{
   renderDias();render();
 };
 document.getElementById('f-del').onclick=()=>{if(editandoId&&confirm('Excluir este rolê?')){salvarMeus(meus().filter(x=>x._id!==editandoId));fechar();renderDias();render();}};
-
-// ===== audiodescrição (voz Luciana, síntese de fala do sistema) =====
-const MESES_LONGO=['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
-let audioOn=false, vozLuciana=null;
-function acharVoz(){
-  if(!('speechSynthesis' in window)) return;
-  const vs=speechSynthesis.getVoices();
-  vozLuciana = vs.find(v=>/luciana/i.test(v.name)&&/(enhanced|premium|aprimorad|melhor)/i.test(v.name))
-            || vs.find(v=>/luciana/i.test(v.name))
-            || vs.find(v=>(v.lang||'').toLowerCase()==='pt-br')
-            || vs.find(v=>(v.lang||'').toLowerCase().startsWith('pt')) || null;
-}
-if('speechSynthesis' in window){ acharVoz(); speechSynthesis.onvoiceschanged=acharVoz; }
-function textoAgenda(){
-  const dt=parseISO(selData);
-  const evs=eventosDe(selData).filter(e=>cats.has(e.cat)).filter(precoPass);
-  const rot = selData===HOJE_ISO?'Hoje':(selData===addDias(HOJE_ISO,1)?'Amanhã':DIAS_LONGO[dt.getDay()]);
-  let t=`Agenda do Apezinho, o que rola em Salvador. ${rot}, dia ${dt.getDate()} de ${MESES_LONGO[dt.getMonth()]}. `;
-  if(!evs.length) return t+'Nenhum rolê nesse dia com os filtros selecionados.';
-  t+=`${evs.length} ${evs.length===1?'rolê':'rolês'}. `;
-  evs.forEach(e=>{
-    t+=`${e.n}. ${CATS[e.cat]}. `;
-    if(e.hora) t+=`Horário: ${e.hora}. `;
-    if(e.local) t+=`Local: ${e.local}. `;
-    if(e.preco) t+=`${e.preco}. `;
-  });
-  return t;
-}
-function falarAgenda(){
-  if(!('speechSynthesis' in window)) return;
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(textoAgenda());
-  u.lang='pt-BR'; if(vozLuciana) u.voice=vozLuciana; u.rate=1; u.pitch=1;
-  speechSynthesis.speak(u);
-}
-function toggleAudio(){
-  const b=document.getElementById('audiofab');
-  if(!('speechSynthesis' in window)){ alert('Seu navegador não suporta audiodescrição por voz.'); return; }
-  audioOn=!audioOn;
-  b.classList.toggle('on',audioOn);
-  b.setAttribute('aria-pressed',audioOn);
-  b.setAttribute('aria-label',audioOn?'Desativar audiodescrição':'Ativar audiodescrição');
-  if(audioOn) falarAgenda(); else speechSynthesis.cancel();
-}
-document.getElementById('audiofab').onclick=toggleAudio;
 
 renderTopo(); renderDias(); renderFiltros(); renderPrecoFiltro(); render();
 </script>
