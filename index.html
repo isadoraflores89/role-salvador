@@ -124,6 +124,28 @@
   .btns .salvar{background:var(--azulejo);color:#fff}
   .btns .cancelar{background:var(--papel2);color:var(--tinta)}
   .del{background:none;border:none;color:var(--coral);font-size:.78rem;cursor:pointer;margin-top:10px;font-weight:700}
+  .ticketerias{max-width:920px;margin:26px auto 0;padding:22px 18px;background:linear-gradient(135deg,rgba(20,179,166,.10),rgba(232,106,158,.08));border:1.5px solid var(--borda);border-radius:var(--radius)}
+  .ticketerias h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;color:var(--mar-escuro);margin-bottom:4px}
+  .ticketerias p{color:var(--cinza);font-size:.88rem;margin-bottom:14px}
+  .tk-grid{display:flex;flex-wrap:wrap;gap:10px}
+  .tk{flex:1 1 130px;text-decoration:none;text-align:center;padding:13px 12px;border-radius:12px;font-weight:700;font-size:.92rem;color:#fff;box-shadow:var(--sombra);transition:.15s;display:flex;flex-direction:column;gap:2px;align-items:center}
+  .tk small{font-weight:500;font-size:.72rem;opacity:.9}
+  .tk:hover{transform:translateY(-2px);filter:brightness(1.05)}
+  .tk.shotgun{background:#111}
+  .tk.sympla{background:var(--rosa)}
+  .tk.rolebom{background:var(--azul)}
+  .tk.ingresse{background:var(--mar)}
+  .tk.eventim{background:var(--magenta)}
+  .praias{max-width:920px;margin:22px auto 0;padding:22px 18px;background:linear-gradient(135deg,rgba(36,116,196,.08),rgba(243,189,31,.10));border:1.5px solid var(--borda);border-radius:var(--radius)}
+  .praias h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;color:var(--mar-escuro);margin-bottom:4px}
+  .praias p{color:var(--cinza);font-size:.88rem;margin-bottom:14px}
+  .praia-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
+  .praia{display:flex;gap:11px;align-items:flex-start;background:#fff;border:1.5px solid var(--borda);border-radius:12px;padding:12px 13px;text-decoration:none;color:inherit;transition:.15s}
+  .praia:hover{transform:translateY(-2px);box-shadow:var(--sombra);border-color:var(--agua)}
+  .praia .num{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--mar);color:#fff;font-weight:700;font-size:.85rem;display:flex;align-items:center;justify-content:center}
+  .praia b{display:block;font-family:var(--serif);font-weight:500;font-size:1.02rem;color:var(--mar-escuro);line-height:1.2}
+  .praia small{color:var(--cinza);font-size:.8rem}
+  .praia .bairro{color:var(--mar);font-weight:600}
   footer{text-align:center;color:var(--cinza);font-size:.82rem;padding:30px 16px 6px;line-height:1.7}
   footer .credito{font-family:var(--serif);font-size:1rem;color:var(--mar-escuro);display:inline-flex;align-items:center;gap:6px}
   footer a{color:var(--mar);font-weight:700;text-decoration:none;border-bottom:2px solid var(--agua)}
@@ -188,6 +210,35 @@
     </div>
   </div>
 </div>
+
+<section class="ticketerias">
+  <h2>🎟 Explorar ticketerias</h2>
+  <p>Mais rolês com ingresso à venda, já filtrados por Salvador:</p>
+  <div class="tk-grid">
+    <a class="tk shotgun" href="https://shotgun.live/pt-br/cities/salvador" target="_blank" rel="noopener">Shotgun<small>festas & baladas</small></a>
+    <a class="tk sympla" href="https://www.sympla.com.br/eventos/salvador-ba/esta-semana" target="_blank" rel="noopener">Sympla<small>shows & teatro</small></a>
+    <a class="tk rolebom" href="https://rolebom.com/pt-br/salvador" target="_blank" rel="noopener">Rolebom<small>agrega várias</small></a>
+    <a class="tk ingresse" href="https://www.google.com/search?q=ingresse+eventos+salvador+ba" target="_blank" rel="noopener">Ingresse<small>shows & festas</small></a>
+    <a class="tk eventim" href="https://www.google.com/search?q=eventim+shows+salvador+ba" target="_blank" rel="noopener">Eventim<small>grandes shows</small></a>
+  </div>
+</section>
+
+<section class="praias">
+  <h2>🏖 Praias mais amadas</h2>
+  <p>As 10 praias mais bem avaliadas de Salvador — toque pra abrir no mapa:</p>
+  <div class="praia-grid">
+    <a class="praia" href="https://www.google.com/maps/search/Praia+do+Porto+da+Barra+Salvador+BA" target="_blank" rel="noopener"><span class="num">1</span><span><b>Porto da Barra</b><small>Águas calmas e o pôr do sol mais famoso da cidade. <span class="bairro">Barra</span></small></span></a>
+    <a class="praia" href="https://www.google.com/maps/search/Praia+do+Farol+da+Barra+Salvador+BA" target="_blank" rel="noopener"><span class="num">2</span><span><b>Farol da Barra</b><small>Piscinas naturais no cartão-postal de Salvador. <span class="bairro">Barra</span></small></span></a>
+    <a class="praia" href="https://www.google.com/maps/search/Praia+de+Itapua+Salvador+BA" target="_blank" rel="noopener"><span class="num">3</span><span><b>Itapuã</b><small>Coqueiros e história, cantada por Caymmi e Vinicius. <span class="bairro">Itapuã</span></small></span></a>
+    <a class="praia" href="https://www.google.com/maps/search/Praia+de+Stella+Maris+Salvador+BA" target="_blank" rel="noopener"><span class="num">4</span><span><b>Stella Maris</b><small>Mar aberto, surfe e clima jovem. <span class="bairro">Stella Maris</span></small></span></a>
+    <a class="praia" href="https://www.google.com/maps/search/Praia+do+Flamengo+Salvador+BA" target="_blank" rel="noopener"><span class="num">5</span><span><b>Flamengo</b><small>Faixa larga de areia e água clarinha. <span class="bairro">Flamengo</span></small></span></a>
+    <a class="praia" href="https://www.google.com/maps/search/Praia+do+Buracao+Rio+Vermelho+Salvador+BA" target="_blank" rel="noopener"><span class="num">6</span><span><b>Buracão</b><small>Pequena e charmosa entre falésias, no bairro do Apezinho. <span class="bairro">Rio Vermelho</span></small></span></a>
+    <a class="praia" href="https://www.google.com/maps/search/Praia+de+Ondina+Salvador+BA" target="_blank" rel="noopener"><span class="num">7</span><span><b>Ondina</b><small>Orla urbana pertinho do centro. <span class="bairro">Ondina</span></small></span></a>
+    <a class="praia" href="https://www.google.com/maps/search/Praia+de+Amaralina+Salvador+BA" target="_blank" rel="noopener"><span class="num">8</span><span><b>Amaralina</b><small>Surfe, quiosques e frutos do mar na orla. <span class="bairro">Amaralina</span></small></span></a>
+    <a class="praia" href="https://www.google.com/maps/search/Praia+do+Corsario+Jardim+de+Alah+Salvador+BA" target="_blank" rel="noopener"><span class="num">9</span><span><b>Corsário</b><small>Piscinas naturais na maré baixa. <span class="bairro">Jardim de Alah</span></small></span></a>
+    <a class="praia" href="https://www.google.com/maps/search/Praia+de+Jaguaribe+Salvador+BA" target="_blank" rel="noopener"><span class="num">10</span><span><b>Jaguaribe</b><small>Badalada e com muita estrutura de quiosques. <span class="bairro">Piatã / Jaguaribe</span></small></span></a>
+  </div>
+</section>
 
 <footer>
   <span class="credito">🐚 Feito com <span class="coracao">amor</span> na Bahia por
