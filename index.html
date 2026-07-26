@@ -56,6 +56,13 @@
   .filtros-preco{padding-top:0;margin-top:-2px;padding-bottom:8px}
   .chip.preco{border-color:var(--magenta)}
   .chip.preco[data-on="1"]{background:var(--magenta);color:#fff;border-color:transparent}
+  .cinta{display:block;background:var(--magenta);overflow:hidden;text-decoration:none;box-shadow:0 2px 8px rgba(10,90,84,.14)}
+  .cinta-track{display:flex;width:max-content;align-items:center;animation:cinta-corre 32s linear infinite}
+  .cinta .cu{display:inline-flex;align-items:center;gap:12px;white-space:nowrap;color:#fff;font-weight:700;font-size:.9rem;letter-spacing:.02em;padding:9px 22px}
+  .cinta .cu .ic{width:.95em;height:.95em;color:rgba(255,255,255,.7)}
+  .cinta:hover .cinta-track{animation-play-state:paused}
+  @keyframes cinta-corre{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  @media (prefers-reduced-motion:reduce){.cinta-track{animation:none;width:100%;justify-content:center}.cinta .cu:nth-child(n+2){display:none}}
   .wrap{max-width:920px;margin:0 auto;padding:0 16px}
 
   .dias{display:flex;gap:8px;overflow-x:auto;padding:18px 16px 10px;margin:0 auto;max-width:920px;-webkit-overflow-scrolling:touch}
@@ -202,6 +209,19 @@
   <div class="topo-credito"><a href="https://apezinhodorv.com.br" target="_blank" rel="noopener">feito por apezinhodorv.com.br</a></div>
   <div class="atualizado" id="atualizado"></div>
 </header>
+
+<a class="cinta" href="https://apezinhodorv.com.br" target="_blank" rel="noopener" aria-label="Consulte a disponibilidade do Apezinho do Rio Vermelho">
+  <div class="cinta-track">
+    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+  </div>
+</a>
 
 <div class="dias" id="dias"></div>
 <div class="filtros" id="filtros"></div>
