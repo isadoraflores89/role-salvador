@@ -14,10 +14,10 @@
     --sans:"Inter",system-ui,-apple-system,sans-serif;
     --mar:#0e807a; --mar-escuro:#0a5a54; --agua:#14b3a6;
     --azul:#2474c4; --azul-escuro:#195a9c; --verde:#3a9d5d;
-    --rosa:#e86a9e; --magenta:#b0238c; --amarelo:#f3bd1f; --amarelo-esc:#d99512;
+    --rosa:#e86a9e; --magenta:#b0238c; --roxo-claro:#8a4fc4;
     --areia:#e6f4f2; --creme:#f5fbfb; --tinta:#163330; --cinza:#5b6b69; --borda:#d4e8e5;
     /* apelidos usados no layout */
-    --azulejo:var(--mar); --azulejo-esc:var(--mar-escuro); --sol:var(--amarelo); --sol-esc:var(--amarelo-esc);
+    --azulejo:var(--mar); --azulejo-esc:var(--mar-escuro); --sol:var(--rosa); --sol-esc:var(--azul);
     --coral:var(--rosa); --roxo:var(--magenta); --papel:var(--creme); --papel2:var(--areia);
     --sombra:0 6px 22px rgba(10,90,84,.12); --radius:16px;
   }
@@ -26,8 +26,8 @@
   body{
     font-family:var(--sans);
     background:
-      radial-gradient(circle at 12% 8%, rgba(242,183,5,.10), transparent 40%),
-      radial-gradient(circle at 88% 4%, rgba(233,79,55,.08), transparent 42%),
+      radial-gradient(circle at 12% 8%, rgba(20,179,166,.10), transparent 40%),
+      radial-gradient(circle at 88% 4%, rgba(176,35,140,.07), transparent 42%),
       var(--papel);
     color:var(--tinta); line-height:1.5; padding-bottom:80px;
   }
@@ -43,19 +43,19 @@
     background-size:22px 22px; background-position:0 0,11px 11px;
   }
   header h1{font-family:var(--serif);font-weight:500;font-size:2.1rem;letter-spacing:-.01em;position:relative;z-index:1;display:inline-flex;align-items:center;gap:10px}
-  header h1 .sol{color:var(--amarelo)}
-  header h1 .marca-icone{display:inline-flex;color:var(--amarelo)}
+  header h1 .sol{color:var(--rosa)}
+  header h1 .marca-icone{display:inline-flex;color:var(--rosa)}
   .ic{width:1.05em;height:1.05em;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.16em;flex:0 0 auto}
   header h1 .marca-icone .ic{width:1.7rem;height:1.7rem;stroke-width:1.5}
   .fab .ic{width:1.6rem;height:1.6rem;stroke-width:2.2}
   header p{opacity:.9;font-size:.95rem;margin-top:4px;position:relative;z-index:1}
   header .atualizado{font-size:.72rem;opacity:.75;margin-top:5px;position:relative;z-index:1}
   header .topo-credito{position:relative;z-index:1;margin-top:8px}
-  header .topo-credito a{color:#fff;font-weight:700;font-size:.82rem;text-decoration:none;border-bottom:1.5px solid var(--amarelo);padding-bottom:1px}
-  header .topo-credito a:hover{color:var(--amarelo)}
+  header .topo-credito a{color:#fff;font-weight:700;font-size:.82rem;text-decoration:none;border-bottom:1.5px solid var(--rosa);padding-bottom:1px}
+  header .topo-credito a:hover{color:var(--rosa)}
   .filtros-preco{padding-top:0;margin-top:-2px;padding-bottom:8px}
-  .chip.preco{border-color:var(--amarelo)}
-  .chip.preco[data-on="1"]{background:var(--amarelo);color:var(--tinta);border-color:transparent}
+  .chip.preco{border-color:var(--magenta)}
+  .chip.preco[data-on="1"]{background:var(--magenta);color:#fff;border-color:transparent}
   .wrap{max-width:920px;margin:0 auto;padding:0 16px}
 
   .dias{display:flex;gap:8px;overflow-x:auto;padding:18px 16px 10px;margin:0 auto;max-width:920px;-webkit-overflow-scrolling:touch}
@@ -104,13 +104,13 @@
   .desc{margin-top:9px;font-size:.92rem;color:var(--tinta)}
   .acoes{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
   .acoes a{text-decoration:none;font-size:.83rem;font-weight:700;padding:7px 14px;border-radius:10px;background:var(--papel2);color:var(--azulejo-esc);transition:.15s}
-  .acoes a.prim{background:var(--sol);color:var(--tinta)}
+  .acoes a.prim{background:var(--azul);color:#fff}
   .acoes a:hover{filter:brightness(.96);transform:translateY(-1px)}
   .selo{position:absolute;bottom:10px;right:14px;font-size:.68rem;color:var(--cinza);font-style:italic}
   .vazio{text-align:center;padding:40px 20px;color:var(--cinza)}
   .vazio b{font-size:1.1rem;color:var(--azulejo-esc);display:block;margin-bottom:6px}
 
-  .fab{position:fixed;bottom:22px;right:22px;background:var(--coral);color:#fff;border:none;width:60px;height:60px;border-radius:50%;font-size:1.9rem;cursor:pointer;box-shadow:0 8px 22px rgba(233,79,55,.45);z-index:30;line-height:1;transition:.15s}
+  .fab{position:fixed;bottom:22px;right:22px;background:var(--coral);color:#fff;border:none;width:60px;height:60px;border-radius:50%;font-size:1.9rem;cursor:pointer;box-shadow:0 8px 22px rgba(232,106,158,.45);z-index:30;line-height:1;transition:.15s}
   .fab:hover{transform:scale(1.06)}
   .modal{position:fixed;inset:0;background:rgba(15,76,117,.5);display:none;align-items:flex-end;justify-content:center;z-index:40}
   .modal.on{display:flex}
@@ -145,7 +145,7 @@
   .tk.rolebom{background:var(--azul)}
   .tk.ingresse{background:var(--mar)}
   .tk.eventim{background:var(--magenta)}
-  .praias{max-width:920px;margin:22px auto 0;padding:22px 18px;background:linear-gradient(135deg,rgba(36,116,196,.08),rgba(243,189,31,.10));border:1.5px solid var(--borda);border-radius:var(--radius)}
+  .praias{max-width:920px;margin:22px auto 0;padding:22px 18px;background:linear-gradient(135deg,rgba(36,116,196,.08),rgba(58,157,93,.10));border:1.5px solid var(--borda);border-radius:var(--radius)}
   .praias h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;color:var(--mar-escuro);margin-bottom:4px}
   .praias p{color:var(--cinza);font-size:.88rem;margin-bottom:14px}
   .praia-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px}
@@ -155,6 +155,24 @@
   .praia b{display:block;font-family:var(--serif);font-weight:500;font-size:1.02rem;color:var(--mar-escuro);line-height:1.2}
   .praia small{color:var(--cinza);font-size:.8rem}
   .praia .bairro{color:var(--mar);font-weight:600}
+  .eventos-grandes{max-width:920px;margin:22px auto 0;padding:22px 18px;background:linear-gradient(135deg,rgba(176,35,140,.08),rgba(36,116,196,.08));border:1.5px solid var(--borda);border-radius:var(--radius)}
+  .eventos-grandes h2{font-family:var(--serif);font-weight:500;font-size:1.3rem;color:var(--mar-escuro);margin-bottom:4px}
+  .eventos-grandes>p{color:var(--cinza);font-size:.88rem;margin-bottom:14px}
+  .eg-grid{display:grid;gap:12px}
+  .eg-card{display:flex;gap:14px;background:#fff;border:1.5px solid var(--borda);border-radius:12px;padding:14px;box-shadow:var(--sombra)}
+  .eg-data{flex:0 0 auto;width:64px;text-align:center;color:#fff;border-radius:10px;padding:9px 4px;align-self:flex-start}
+  .eg-data b{display:block;font-family:var(--serif);font-size:1.4rem;line-height:1.05}
+  .eg-data small{font-size:.66rem;text-transform:uppercase;letter-spacing:.5px;opacity:.92}
+  .eg-corpo{flex:1;min-width:0}
+  .eg-corpo h3{font-family:var(--serif);font-weight:500;font-size:1.14rem;color:var(--mar-escuro);line-height:1.2}
+  .eg-local{color:var(--cinza);font-size:.82rem;margin:4px 0 7px;display:flex;align-items:flex-start;gap:5px}
+  .eg-pac{font-size:.9rem;color:var(--tinta);margin-bottom:11px}
+  .eg-cta{display:inline-flex;align-items:center;gap:6px;text-decoration:none;background:var(--verde);color:#fff;font-weight:700;font-size:.85rem;padding:8px 15px;border-radius:10px;transition:.15s}
+  .eg-cta:hover{filter:brightness(1.06);transform:translateY(-1px)}
+  footer .rodape-fotos{display:flex;gap:8px;max-width:520px;margin:0 auto 16px;padding:0 4px}
+  footer .rodape-fotos img{flex:1;width:0;aspect-ratio:1/1;object-fit:cover;border-radius:12px;box-shadow:var(--sombra)}
+  footer .rodape-linha{font-weight:700;color:var(--mar)}
+  footer .rodape-dev a{color:var(--azul);font-weight:700;text-decoration:none;border-bottom:1.5px solid var(--agua)}
   footer{text-align:center;color:var(--cinza);font-size:.82rem;padding:30px 16px 6px;line-height:1.7}
   footer .credito{font-family:var(--serif);font-size:1rem;color:var(--mar-escuro);display:inline-flex;align-items:center;gap:6px}
   footer a{color:var(--mar);font-weight:700;text-decoration:none;border-bottom:2px solid var(--agua)}
@@ -176,6 +194,7 @@
 <symbol id="ic-beach" viewBox="0 0 24 24"><path d="M12 12v8a2 2 0 0 0 4 0"/><path d="M2 12a10 10 0 0 1 20 0z"/><path d="M12 2v1"/></symbol>
 <symbol id="ic-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></symbol>
 <symbol id="ic-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1l1-13M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></symbol>
+<symbol id="ic-star" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6L12 17l-5.3 2.6 1.1-6L3.4 9.4l6-.8z"/></symbol>
 </defs></svg>
 <header>
   <h1><span class="marca-icone"><svg class="ic"><use href="#ic-sol"/></svg></span> Agenda do <span class="sol">Apezinho</span></h1>
@@ -236,15 +255,55 @@
   </div>
 </div>
 
-<section class="ticketerias">
-  <h2><svg class="ic"><use href="#ic-ticket"/></svg> Explorar ticketerias</h2>
-  <p>Mais rolês com ingresso à venda, já filtrados por Salvador:</p>
-  <div class="tk-grid">
-    <a class="tk shotgun" href="https://shotgun.live/pt-br/cities/salvador" target="_blank" rel="noopener">Shotgun<small>festas & baladas</small></a>
-    <a class="tk sympla" href="https://www.sympla.com.br/eventos/salvador-ba/esta-semana" target="_blank" rel="noopener">Sympla<small>shows & teatro</small></a>
-    <a class="tk rolebom" href="https://rolebom.com/pt-br/salvador" target="_blank" rel="noopener">Rolebom<small>agrega várias</small></a>
-    <a class="tk ingresse" href="https://www.google.com/search?q=ingresse+eventos+salvador+ba" target="_blank" rel="noopener">Ingresse<small>shows & festas</small></a>
-    <a class="tk eventim" href="https://www.google.com/search?q=eventim+shows+salvador+ba" target="_blank" rel="noopener">Eventim<small>grandes shows</small></a>
+<section class="eventos-grandes">
+  <h2><svg class="ic"><use href="#ic-star"/></svg> Vem aí: grandes rolês</h2>
+  <p>Os eventos que lotam Salvador — e o Apezinho tem o <b>prédio inteiro</b> (3 apês, até 8 pessoas) pra sua turma ficar junta, a um quarteirão do mar.</p>
+  <div class="eg-grid">
+    <article class="eg-card">
+      <div class="eg-data" style="background:var(--magenta)"><b>7–8</b><small>nov 2026</small></div>
+      <div class="eg-corpo">
+        <h3>AfroPunk Brasil</h3>
+        <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Parque de Exposições — com Gilberto Gil, Emicida, Kehlani e Jorja Smith</p>
+        <p class="eg-pac">Prédio inteiro pros 2 dias de festival: 8 camas e volta tranquila pro Rio Vermelho.</p>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20o%20predio%20inteiro%20do%20Apezinho%20para%20o%20AfroPunk%20(7-8%20nov%202026)" target="_blank" rel="noopener">Reservar o prédio <svg class="ic"><use href="#ic-arrow"/></svg></a>
+      </div>
+    </article>
+    <article class="eg-card">
+      <div class="eg-data" style="background:var(--azul)"><b>31</b><small>dez 2026</small></div>
+      <div class="eg-corpo">
+        <h3>Réveillon na orla</h3>
+        <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Praias e orla de Salvador — a virada mais animada do país</p>
+        <p class="eg-pac">Vire o ano com a turma toda: 8 pessoas no prédio, pertinho da festa e da praia.</p>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20o%20predio%20inteiro%20do%20Apezinho%20para%20o%20Reveillon%20(virada%202026-2027)" target="_blank" rel="noopener">Reservar o prédio <svg class="ic"><use href="#ic-arrow"/></svg></a>
+      </div>
+    </article>
+    <article class="eg-card">
+      <div class="eg-data" style="background:var(--verde)"><b>14</b><small>jan 2027</small></div>
+      <div class="eg-corpo">
+        <h3>Lavagem do Bonfim</h3>
+        <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Colina Sagrada — a quinta-feira de fé e festa mais bonita de janeiro</p>
+        <p class="eg-pac">Base pra sua turma no cortejo: prédio inteiro, 8 pessoas, e cama garantida depois.</p>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20o%20predio%20inteiro%20do%20Apezinho%20para%20a%20Lavagem%20do%20Bonfim%20(jan%202027)" target="_blank" rel="noopener">Reservar o prédio <svg class="ic"><use href="#ic-arrow"/></svg></a>
+      </div>
+    </article>
+    <article class="eg-card">
+      <div class="eg-data" style="background:var(--rosa)"><b>2</b><small>fev 2027</small></div>
+      <div class="eg-corpo">
+        <h3>Festa de Iemanjá &amp; pré-Carnaval</h3>
+        <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Rio Vermelho — a festa acontece na porta do Apezinho (Pipoco 29/jan, Iemanjá 2/fev)</p>
+        <p class="eg-pac">O melhor endereço do dia: prédio inteiro no coração do Rio Vermelho, a passos do mar de Iemanjá.</p>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20o%20predio%20inteiro%20do%20Apezinho%20para%20a%20Festa%20de%20Iemanja%20e%20pre-carnaval%20(fev%202027)" target="_blank" rel="noopener">Reservar o prédio <svg class="ic"><use href="#ic-arrow"/></svg></a>
+      </div>
+    </article>
+    <article class="eg-card">
+      <div class="eg-data" style="background:var(--mar)"><b>4–10</b><small>fev 2027</small></div>
+      <div class="eg-corpo">
+        <h3>Carnaval de Salvador</h3>
+        <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Barra-Ondina, Campo Grande e Pelô — 7 dias de folia</p>
+        <p class="eg-pac">Prédio inteiro pra galera toda: 8 camas garantidas depois do trio, longe da correria.</p>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20o%20predio%20inteiro%20do%20Apezinho%20para%20o%20Carnaval%20de%20Salvador%20(4-10%20fev%202027)" target="_blank" rel="noopener">Reservar o prédio <svg class="ic"><use href="#ic-arrow"/></svg></a>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -266,8 +325,16 @@
 </section>
 
 <footer>
+  <div class="rodape-fotos">
+    <img src="fotos/ap-porsol.jpg" alt="Pôr do sol no Rio Vermelho" loading="lazy">
+    <img src="fotos/ap-bairro.jpg" alt="Bairro do Rio Vermelho" loading="lazy">
+    <img src="fotos/ap-casa.jpg" alt="Apezinho do Rio Vermelho" loading="lazy">
+    <img src="fotos/ap-arte.jpg" alt="Arte no Apezinho" loading="lazy">
+  </div>
   <span class="credito"><svg class="ic"><use href="#ic-sol"/></svg> Feito com <span class="coracao">amor</span> na Bahia por
     <a href="https://apezinhodorv.com.br" target="_blank" rel="noopener">Apezinho do RV</a></span><br>
+  <span class="rodape-linha">Atualização automática semanal</span><br>
+  <span class="rodape-dev">desenvolvido por <a href="https://garotadeprograma.dev.br" target="_blank" rel="noopener">garotadeprograma.dev.br</a></span><br>
   Toque no <b style="color:var(--rosa)">+</b> pra adicionar seus rolês — eles ficam salvos no seu aparelho.
 </footer>
 
