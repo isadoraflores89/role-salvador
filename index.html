@@ -112,8 +112,10 @@
   .acoes{margin-top:12px;display:flex;flex-wrap:wrap;gap:8px}
   .acoes a{text-decoration:none;font-size:.83rem;font-weight:700;padding:7px 14px;border-radius:10px;background:var(--papel2);color:var(--azulejo-esc);transition:.15s}
   .acoes a.prim{background:var(--azul);color:#fff}
+  .acoes a.lembrar{color:var(--magenta)}
   .acoes a:hover{filter:brightness(.96);transform:translateY(-1px)}
   .selo{position:absolute;bottom:10px;right:14px;font-size:.68rem;color:var(--cinza);font-style:italic}
+  .selo-meu{color:var(--magenta);font-style:normal;font-weight:700}
   .vazio{text-align:center;padding:40px 20px;color:var(--cinza)}
   .vazio b{font-size:1.1rem;color:var(--azulejo-esc);display:block;margin-bottom:6px}
 
@@ -202,6 +204,7 @@
 <symbol id="ic-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></symbol>
 <symbol id="ic-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M5 7l1 13a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1l1-13M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></symbol>
 <symbol id="ic-star" viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .8-4.4 4.2 1.1 6L12 17l-5.3 2.6 1.1-6L3.4 9.4l6-.8z"/></symbol>
+<symbol id="ic-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a1.9 1.9 0 0 1-3.4 0"/></symbol>
 </defs></svg>
 <header>
   <h1><span class="marca-icone"><svg class="ic"><use href="#ic-sol"/></svg></span> Agenda do <span class="sol">Apezinho</span></h1>
@@ -231,12 +234,12 @@
   <div class="lista" id="lista"></div>
 </div>
 
-<button class="fab" id="fab" title="Adicionar rolê"><svg class="ic"><use href="#ic-plus"/></svg></button>
+<button class="fab" id="fab" title="Adicionar um rolê meu (fica só neste aparelho)" aria-label="Adicionar um rolê meu"><svg class="ic"><use href="#ic-plus"/></svg></button>
 
 <div class="modal" id="modal">
   <div class="painel">
-    <h2 id="modalTitulo">Novo rolê</h2>
-    <div class="dica">Adicione um evento com data marcada ou um rolê que se repete toda semana.</div>
+    <h2 id="modalTitulo">Adicionar um rolê meu</h2>
+    <div class="dica">Sua listinha particular: o que você adicionar aqui fica salvo <b>só neste aparelho</b> — ninguém mais vê.</div>
     <label>Nome do evento</label>
     <input id="f-nome" placeholder="Ex: Show na Concha Acústica">
     <div class="row">
@@ -556,7 +559,8 @@ function render(){
 function card(e){
   const c=document.createElement('div'); c.className='card c-'+e.cat;
   let selo='';
-  if(e._fixo) selo='toda '+e.dias.map(d=>DIAS[d]).join('·');
+  if(e._meu) selo='seu rolê';
+  else if(e._fixo) selo='toda '+e.dias.map(d=>DIAS[d]).join('·');
   else if(e._datado) selo='evento único';
   c.innerHTML=`
     <div class="topo"><h3>${esc(e.n)}</h3><span class="tag c-${e.cat}">${CATS[e.cat]}</span></div>
@@ -569,13 +573,34 @@ function card(e){
     <div class="acoes">
       ${e.link?`<a class="prim" href="${esc(e.link)}" target="_blank" rel="noopener">Ver / Ingressos <svg class="ic"><use href="#ic-arrow"/></svg></a>`:''}
       <a href="https://www.google.com/maps/search/${encodeURIComponent((e.local||'')+' Salvador BA')}" target="_blank" rel="noopener">Como chegar <svg class="ic"><use href="#ic-map"/></svg></a>
+      <a class="lembrar" href="${icsHref(e.n,e.data||selData,e.local,e.desc)}" download="lembrete-role.ics">Lembrar <svg class="ic"><use href="#ic-bell"/></svg></a>
       ${e._meu?`<a href="#" data-edit="${e._id}">Editar <svg class="ic"><use href="#ic-pencil"/></svg></a>`:''}
     </div>
-    ${selo?`<span class="selo">${selo}</span>`:''}`;
+    ${selo?`<span class="selo${e._meu?' selo-meu':''}">${selo}</span>`:''}`;
   c.querySelectorAll('[data-edit]').forEach(a=>a.onclick=ev=>{ev.preventDefault();abrirModal(a.dataset.edit)});
   return c;
 }
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+// gera um arquivo de calendário (.ics) com aviso 1 dia antes — pro usuário ser lembrado
+function icsHref(nome,iso,local,desc){
+  const base=iso||HOJE_ISO, dt=base.replace(/-/g,''), fim=addDias(base,1).replace(/-/g,'');
+  const slug=String(nome||'role').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,24);
+  const e2=s=>String(s||'').replace(/[\\;,]/g,m=>'\\'+m).replace(/\r?\n/g,'\\n');
+  const linhas=[
+    'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Apezinho do RV//Role Salvador//PT','CALSCALE:GREGORIAN',
+    'BEGIN:VEVENT',
+    'UID:role-'+dt+'-'+slug+'@apezinhodorv.com.br',
+    'DTSTAMP:'+dt+'T090000Z',
+    'DTSTART;VALUE=DATE:'+dt,
+    'DTEND;VALUE=DATE:'+fim,
+    'SUMMARY:'+e2(nome),
+    local?('LOCATION:'+e2(local+' — Salvador, BA')):'',
+    'DESCRIPTION:'+e2((desc?desc+' ':'')+'· via Agenda do Apezinho (roles.apezinhodorv.com.br)'),
+    'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:'+e2('Amanhã: '+nome),'TRIGGER:-P1D','END:VALARM',
+    'END:VEVENT','END:VCALENDAR'
+  ].filter(Boolean);
+  return 'data:text/calendar;charset=utf-8,'+encodeURIComponent(linhas.join('\r\n'));
+}
 
 // ===== modal =====
 const modal=document.getElementById('modal');
@@ -591,7 +616,7 @@ document.getElementById('tog-semana').onclick=()=>setTipo('semana');
 
 function abrirModal(id){
   editandoId=id||null;
-  document.getElementById('modalTitulo').textContent=id?'Editar rolê':'Novo rolê';
+  document.getElementById('modalTitulo').textContent=id?'Editar meu rolê':'Adicionar um rolê meu';
   document.getElementById('f-del').style.display=id?'block':'none';
   montaDiasCheck();
   const g=x=>document.getElementById(x);
