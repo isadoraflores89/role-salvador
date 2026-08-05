@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Agenda do Apezinho — o que rola em Salvador</title>
+<title>Rolê Cultural SSA — por apezinhodorv</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -57,6 +57,7 @@
   .chip.preco{border-color:var(--magenta)}
   .chip.preco[data-on="1"]{background:var(--magenta);color:#fff;border-color:transparent}
   .cinta{display:block;background:var(--magenta);overflow:hidden;text-decoration:none;box-shadow:0 2px 8px rgba(10,90,84,.14)}
+  .cinta-eg{border-radius:10px;margin:0 0 14px}
   .cinta-track{display:flex;width:max-content;align-items:center;animation:cinta-corre 80s linear infinite}
   .cinta .cu{display:inline-flex;align-items:center;gap:12px;white-space:nowrap;color:#fff;font-weight:700;font-size:.9rem;letter-spacing:.02em;padding:9px 22px}
   .cinta .cu .ic{width:.95em;height:.95em;color:rgba(255,255,255,.7)}
@@ -80,8 +81,8 @@
   .dia.ativo b{color:#fff}
   .dia .pino{position:absolute;top:5px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--coral)}
 
-  .filtros{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;padding:6px 16px 4px}
-  .chip{border:1.5px solid var(--papel2);background:#fff;color:var(--tinta);padding:5px 13px;border-radius:999px;font-size:.82rem;cursor:pointer;transition:.15s;font-weight:600}
+  .filtros{display:flex;flex-wrap:nowrap;gap:7px;justify-content:flex-start;padding:6px 14px 8px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .chip{flex:0 0 auto;border:1.5px solid var(--papel2);background:#fff;color:var(--tinta);padding:5px 13px;border-radius:4px;font-size:.82rem;cursor:pointer;transition:.15s;font-weight:600;white-space:nowrap}
   .chip[data-on="1"]{color:#fff;border-color:transparent}
   .chip.c-musica[data-on="1"]{background:var(--azulejo)}
   .chip.c-festa[data-on="1"]{background:var(--coral)}
@@ -207,28 +208,13 @@
 <symbol id="ic-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a1.9 1.9 0 0 1-3.4 0"/></symbol>
 </defs></svg>
 <header>
-  <h1><span class="marca-icone"><svg class="ic"><use href="#ic-sol"/></svg></span> Agenda do <span class="sol">Apezinho</span></h1>
-  <p>Acompanhe o que rola em Salvador</p>
-  <div class="topo-credito"><a href="https://apezinhodorv.com.br" target="_blank" rel="noopener">feito por apezinhodorv.com.br</a></div>
+  <h1><span class="marca-icone"><svg class="ic"><use href="#ic-sol"/></svg></span> Rolê Cultural <span class="sol">SSA</span></h1>
+  <div class="topo-credito"><a href="https://apezinhodorv.com.br" target="_blank" rel="noopener">por apezinhodorv.</a></div>
   <div class="atualizado" id="atualizado"></div>
 </header>
 
-<a class="cinta" href="https://apezinhodorv.com.br" target="_blank" rel="noopener" aria-label="Consulte a disponibilidade do Apezinho do Rio Vermelho">
-  <div class="cinta-track">
-    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
-    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
-    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
-    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
-    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
-    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
-    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
-    <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade do apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
-  </div>
-</a>
-
 <div class="dias" id="dias"></div>
 <div class="filtros" id="filtros"></div>
-<div class="filtros filtros-preco" id="filtrosPreco"></div>
 <div class="wrap">
   <div class="contador" id="contador"></div>
   <div class="lista" id="lista"></div>
@@ -280,7 +266,17 @@
 
 <section class="eventos-grandes">
   <h2><svg class="ic"><use href="#ic-star"/></svg> Vem aí: grandes rolês</h2>
-  <p>Os eventos que lotam Salvador — e o Apezinho tem o <b>prédio inteiro</b> (3 apês, até 8 pessoas) pra sua turma ficar junta, a um quarteirão do mar.</p>
+  <p>Os eventos que lotam Salvador — reserve com a gente e <b>escolha os apês</b> que quiser, a um quarteirão do mar.</p>
+  <a class="cinta cinta-eg" href="https://apezinhodorv.com.br" target="_blank" rel="noopener" aria-label="Consulte a disponibilidade do Apezinho">
+    <div class="cinta-track">
+      <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade em apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+      <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade em apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+      <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade em apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+      <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade em apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+      <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade em apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+      <span class="cu">Já sabe onde se hospedar? Consulte a disponibilidade em apezinhodorv.com.br <svg class="ic"><use href="#ic-sol"/></svg></span>
+    </div>
+  </a>
   <div class="eg-grid">
     <article class="eg-card">
       <div class="eg-data" style="background:var(--magenta)"><b>7–8</b><small>nov 2026</small></div>
@@ -288,7 +284,7 @@
         <h3>AfroPunk Brasil</h3>
         <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Parque de Exposições — com Gilberto Gil, Emicida, Kehlani e Jorja Smith</p>
         <p class="eg-pac">Prédio cheio, mas ainda temos <b>2 apartamentos livres</b> (até 6 pessoas) — base perfeita pros 2 dias de festival, pertinho da volta pro Rio Vermelho.</p>
-        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20reservar%202%20apartamentos%20do%20Apezinho%20para%20o%20AfroPunk%20(7-8%20nov%202026)" target="_blank" rel="noopener">Reservar 2 apês <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20reservar%20no%20Apezinho%20para%20o%20AfroPunk%20(7-8%20nov%202026).%20Quais%20apartamentos%20estao%20disponiveis%3F" target="_blank" rel="noopener">Reservar <svg class="ic"><use href="#ic-arrow"/></svg></a>
       </div>
     </article>
     <article class="eg-card">
@@ -297,7 +293,7 @@
         <h3>Réveillon na orla</h3>
         <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Praias e orla de Salvador — a virada mais animada do país</p>
         <p class="eg-pac">Vire o ano com a turma toda: 8 pessoas no prédio, pertinho da festa e da praia.</p>
-        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20o%20predio%20inteiro%20do%20Apezinho%20para%20o%20Reveillon%20(virada%202026-2027)" target="_blank" rel="noopener">Reservar o prédio <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20reservar%20no%20Apezinho%20para%20o%20Reveillon%20(31%20dez).%20Quais%20apartamentos%20estao%20disponiveis%3F" target="_blank" rel="noopener">Reservar <svg class="ic"><use href="#ic-arrow"/></svg></a>
       </div>
     </article>
     <article class="eg-card">
@@ -306,7 +302,7 @@
         <h3>Lavagem do Bonfim</h3>
         <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Colina Sagrada — a quinta-feira de fé e festa mais bonita de janeiro</p>
         <p class="eg-pac">Base pra sua turma no cortejo: prédio inteiro, 8 pessoas, e cama garantida depois.</p>
-        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20o%20predio%20inteiro%20do%20Apezinho%20para%20a%20Lavagem%20do%20Bonfim%20(jan%202027)" target="_blank" rel="noopener">Reservar o prédio <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20reservar%20no%20Apezinho%20para%20a%20Lavagem%20do%20Bonfim%20(jan%202027).%20Quais%20apartamentos%20estao%20disponiveis%3F" target="_blank" rel="noopener">Reservar <svg class="ic"><use href="#ic-arrow"/></svg></a>
       </div>
     </article>
     <article class="eg-card">
@@ -315,7 +311,7 @@
         <h3>Festa de Iemanjá &amp; pré-Carnaval</h3>
         <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Rio Vermelho — a festa acontece na porta do Apezinho (Pipoco 29/jan, Iemanjá 2/fev)</p>
         <p class="eg-pac">O melhor endereço do dia: prédio inteiro no coração do Rio Vermelho, a passos do mar de Iemanjá.</p>
-        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20o%20predio%20inteiro%20do%20Apezinho%20para%20a%20Festa%20de%20Iemanja%20e%20pre-carnaval%20(fev%202027)" target="_blank" rel="noopener">Reservar o prédio <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20reservar%20no%20Apezinho%20para%20a%20Festa%20de%20Iemanja%20e%20pre-carnaval%20(fev%202027).%20Quais%20apartamentos%20estao%20disponiveis%3F" target="_blank" rel="noopener">Reservar <svg class="ic"><use href="#ic-arrow"/></svg></a>
       </div>
     </article>
     <article class="eg-card">
@@ -324,7 +320,7 @@
         <h3>Carnaval de Salvador</h3>
         <p class="eg-local"><svg class="ic"><use href="#ic-pin"/></svg> Barra-Ondina, Campo Grande e Pelô — 7 dias de folia</p>
         <p class="eg-pac">Prédio inteiro pra galera toda: 8 camas garantidas depois do trio, longe da correria.</p>
-        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20o%20predio%20inteiro%20do%20Apezinho%20para%20o%20Carnaval%20de%20Salvador%20(4-10%20fev%202027)" target="_blank" rel="noopener">Reservar o prédio <svg class="ic"><use href="#ic-arrow"/></svg></a>
+        <a class="eg-cta" href="https://wa.me/5571992740126?text=Ola!%20Quero%20reservar%20no%20Apezinho%20para%20o%20Carnaval%20de%20Salvador%20(4-10%20fev%202027).%20Quais%20apartamentos%20estao%20disponiveis%3F" target="_blank" rel="noopener">Reservar <svg class="ic"><use href="#ic-arrow"/></svg></a>
       </div>
     </article>
   </div>
@@ -357,7 +353,6 @@
   <span class="credito"><svg class="ic"><use href="#ic-sol"/></svg> Feito com <span class="coracao">amor</span> na Bahia por
     <a href="https://apezinhodorv.com.br" target="_blank" rel="noopener">Apezinho do RV</a></span><br>
   <span class="rodape-linha">Atualização automática semanal</span><br>
-  <span class="rodape-dev">desenvolvido por <a href="https://garotadeprograma.dev.br" target="_blank" rel="noopener">garotadeprograma.dev.br</a></span><br>
   Toque no <b style="color:var(--rosa)">+</b> pra adicionar seus rolês — eles ficam salvos no seu aparelho.
 </footer>
 
@@ -371,7 +366,7 @@ const CATS = {musica:'Música',festa:'Festa',teatro:'Teatro',arte:'Arte',feira:'
 const HOJE_ISO = '2026-08-04';
 const DIAS_MOSTRAR = 14;
 
-// ===== Eventos datados reais (atualizados 04/08/2026) =====
+// AGENDA-AUTO-INICIO (não editar à mão — atualizado pela automação semanal do GitHub)
 const DATADOS = [
   {n:"Paulo Pitta — jazz instrumental", cat:"musica", data:"2026-08-05", hora:"consultar", local:"Teatro Gamboa — Centro", preco:"Consultar",
    desc:"Saxofone entre a tradição afro-brasileira, o jazz espiritual e a música contemporânea.",
@@ -407,6 +402,7 @@ const DATADOS = [
    desc:"Celebrações, shows e atividades pela primeira santa brasileira — até 13 de agosto.",
    link:"https://www.google.com/search?q=Festa+Santa+Dulce+dos+Pobres+Salvador+2026+programacao"},
 ];
+// AGENDA-AUTO-FIM
 
 // ===== Rolês recorrentes (fixos da cidade) =====
 const FIXOS = [
@@ -521,6 +517,11 @@ function renderFiltros(){
     c.onclick=()=>{cats.has(k)?cats.delete(k):cats.add(k);if(cats.size===0)cats.add(k);renderFiltros();render()};
     el.appendChild(c);
   }
+  // filtro de preço enxuto: só "Grátis" (liga/desliga), na mesma linha
+  const g=document.createElement('button');
+  g.className='chip preco'; g.textContent='Grátis'; g.dataset.on=precoFiltro==='gratis'?'1':'0';
+  g.onclick=()=>{precoFiltro=precoFiltro==='gratis'?'todos':'gratis';renderFiltros();render()};
+  el.appendChild(g);
 }
 
 const PRECOS=[['todos','Todos'],['gratis','Grátis'],['30','Até R$30'],['50','Até R$50'],['100','Até R$100']];
@@ -662,7 +663,7 @@ document.getElementById('f-salvar').onclick=()=>{
 };
 document.getElementById('f-del').onclick=()=>{if(editandoId&&confirm('Excluir este rolê?')){salvarMeus(meus().filter(x=>x._id!==editandoId));fechar();renderDias();render();}};
 
-renderTopo(); renderDias(); renderFiltros(); renderPrecoFiltro(); render();
+renderTopo(); renderDias(); renderFiltros(); render();
 </script>
 </body>
 </html>

@@ -1,0 +1,43 @@
+name: Atualiza agenda semanal
+
+# Roda toda quinta às 12:00 UTC (= 9h em Salvador/Bahia) e também pode ser
+# disparada manualmente pela aba "Actions" do GitHub (botão "Run workflow").
+on:
+  schedule:
+    - cron: "0 12 * * 4"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write   # deixa o robô do GitHub publicar (git push) no próprio repo
+
+jobs:
+  atualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Baixar o repositório
+        uses: actions/checkout@v4
+
+      - name: Preparar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Instalar o SDK da Anthropic
+        run: npm install @anthropic-ai/sdk
+
+      - name: Gerar a agenda da semana
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/atualiza-agenda.mjs
+
+      - name: Publicar se algo mudou
+        run: |
+          if [ -n "$(git status --porcelain index.html)" ]; then
+            git config user.name "Role Cultural SSA Bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add index.html
+            git commit -m "chore: atualiza agenda da semana (auto)"
+            git push
+          else
+            echo "Nada mudou nesta semana."
+          fi
