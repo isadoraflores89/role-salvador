@@ -492,7 +492,7 @@ function temEventoDatado(iso){
 function renderTopo(){
   const dt=parseISO(HOJE_ISO);
   document.getElementById('atualizado').textContent =
-    'agenda atualizada em '+dt.getDate()+' de '+['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'][dt.getMonth()];
+    'agenda atualizada em '+dt.getDate()+' de '+['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'][dt.getMonth()]+' de '+dt.getFullYear();
 }
 
 function renderDias(){
@@ -502,7 +502,7 @@ function renderDias(){
     const div=document.createElement('div');
     div.className='dia'+(iso===HOJE_ISO?' hoje':'')+(iso===selData?' ativo':'');
     div.innerHTML=`<small>${k===0?'Hoje':(k===1?'Amanhã':DIAS[dt.getDay()])}</small>`+
-                  `<b>${dt.getDate()}</b><span class="mes">${MESES[dt.getMonth()]}</span>`+
+                  `<b>${dt.getDate()}</b><span class="mes">${MESES[dt.getMonth()]} ${String(dt.getFullYear()).slice(2)}</span>`+
                   (temEventoDatado(iso)?'<span class="pino"></span>':'');
     div.onclick=()=>{selData=iso;renderDias();render()};
     el.appendChild(div);
@@ -557,7 +557,7 @@ function render(){
   const datados=evs.filter(e=>e._datado), fixos=evs.filter(e=>!e._datado);
   const rot = selData===HOJE_ISO?'Hoje':(selData===addDias(HOJE_ISO,1)?'Amanhã':DIAS_LONGO[dt.getDay()]);
   document.getElementById('contador').textContent =
-    `${rot}, ${dt.getDate()}/${String(dt.getMonth()+1).padStart(2,'0')} · ${evs.length} rolê${evs.length!==1?'s':''}`;
+    `${rot}, ${dt.getDate()}/${String(dt.getMonth()+1).padStart(2,'0')}/${dt.getFullYear()} · ${evs.length} rolê${evs.length!==1?'s':''}`;
 
   if(evs.length===0){
     lista.innerHTML=`<div class="vazio"><b>Nada marcado nesse dia</b>Ajuste os filtros ou toque no + pra adicionar um rolê.</div>`;

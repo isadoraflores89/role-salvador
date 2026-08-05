@@ -1,14 +1,16 @@
 name: Atualiza agenda semanal
 
-# Roda toda quinta às 12:00 UTC (= 9h em Salvador/Bahia) e também pode ser
-# disparada manualmente pela aba "Actions" do GitHub (botão "Run workflow").
+# Roda toda quinta às 12:00 UTC (= 9h em Salvador/Bahia). Também dá pra
+# disparar na mão pela aba "Actions" do GitHub (botão "Run workflow").
+# Autenticação pela ASSINATURA do Claude (Pro ou Max) — NÃO precisa de conta
+# de API paga. O token vem do secret CLAUDE_CODE_OAUTH_TOKEN.
 on:
   schedule:
     - cron: "0 12 * * 4"
   workflow_dispatch: {}
 
 permissions:
-  contents: write   # deixa o robô do GitHub publicar (git push) no próprio repo
+  contents: write   # deixa o Claude publicar (git commit + push) no próprio repo
 
 jobs:
   atualizar:
@@ -17,27 +19,46 @@ jobs:
       - name: Baixar o repositório
         uses: actions/checkout@v4
 
-      - name: Preparar Node
-        uses: actions/setup-node@v4
+      - name: Atualizar a agenda com o Claude
+        uses: anthropics/claude-code-action@v1
         with:
-          node-version: 20
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          claude_args: '--max-turns 25'
+          prompt: |
+            Você vai atualizar a agenda cultural de Salvador no arquivo index.html deste repositório.
 
-      - name: Instalar o SDK da Anthropic
-        run: npm install @anthropic-ai/sdk
+            1) Descubra a data de hoje em Salvador (fuso America/Bahia), no formato AAAA-MM-DD.
 
-      - name: Gerar a agenda da semana
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: node scripts/atualiza-agenda.mjs
+            2) Pesquise na web (use WebSearch/WebFetch) a programação cultural REAL e ATUAL de Salvador
+               dos próximos 12 dias a partir de hoje: shows, teatro, dança, exposições, festas e feiras.
+               IMPORTANTíSSIMO: use SOMENTE informação do ano atual — ignore páginas e eventos de anos
+               anteriores. Se a data não for claramente do ano atual, descarte.
+               Use APENAS estas fontes: el Cabong (elcabong.com.br), Roda Cultural, Roteiro Cultural SSA
+               (roteiroculturalssa.com.br), Sympla (sympla.com.br), Pixta, Eventim, Shotgun (shotgun.live)
+               e o site da Prefeitura de Salvador (salvador.ba.gov.br / culturatododia / Pelourinho Dia e Noite).
 
-      - name: Publicar se algo mudou
-        run: |
-          if [ -n "$(git status --porcelain index.html)" ]; then
-            git config user.name "Role Cultural SSA Bot"
-            git config user.email "actions@users.noreply.github.com"
-            git add index.html
-            git commit -m "chore: atualiza agenda da semana (auto)"
-            git push
-          else
-            echo "Nada mudou nesta semana."
-          fi
+            3) Edite APENAS DUAS coisas no index.html, sem tocar em mais nada:
+               (a) A linha que começa com  const HOJE_ISO =  -> troque o valor pela data de hoje (AAAA-MM-DD).
+               (b) O trecho entre os marcadores  // AGENDA-AUTO-INICIO  e  // AGENDA-AUTO-FIM  -> substitua o
+                   array const DATADOS por 6 a 12 eventos reais, no MESMO estilo dos itens que já existem
+                   (objetos JavaScript com aspas duplas). Campos de cada item, nesta ordem:
+                   n (nome), cat (categoria), data (AAAA-MM-DD), hora (ex 19h), local (Local — bairro),
+                   preco (ex R$45 ou Grátis ou Consultar), desc (uma frase curta), link (URL).
+                   Mantenha os dois marcadores de comentário no lugar.
+
+            REGRA DO LINK (obrigatória): o campo link deve apontar SEMPRE para o link direto de INGRESSOS
+            (Sympla, Shotgun, Eventim ou Pixta) OU, quando o evento for gratuito, para a página EXATA da
+            fonte onde a informação foi encontrada (o artigo/post específico do el Cabong, Roda Cultural,
+            Roteiro Cultural SSA ou da Prefeitura). NUNCA use link de busca do Google nem a home genérica.
+
+            Outras regras: cat deve ser exatamente um destes seis valores minúsculos — musica, festa,
+            teatro, arte, feira, popular. data no formato AAAA-MM-DD, dentro dos próximos 12 dias e do ano
+            atual. NUNCA invente eventos (se achar poucos confiáveis, coloque poucos). NÃO use emojis em
+            lugar nenhum. NÃO altere o array FIXOS nem nenhuma outra parte do arquivo.
+
+            4) Confira que o index.html continua válido (chaves, colchetes e vírgulas do DATADOS certos).
+
+            5) Publique: faça git add do index.html, git commit com a mensagem
+               "chore: atualiza agenda da semana (auto)" e git push na branch main.
+               Se não encontrar nenhum evento novo confiável, atualize só a data (HOJE_ISO) e publique
+               mesmo assim.
