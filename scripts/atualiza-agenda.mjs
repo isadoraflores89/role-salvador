@@ -14,12 +14,15 @@ const hoje = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Bahia' }).for
 
 const CATS = new Set(['musica', 'festa', 'teatro', 'arte', 'feira', 'popular']);
 
-const prompt = `Você é curador da agenda cultural de Salvador/BA. Hoje é ${hoje}.
-Pesquise na web a programação cultural REAL de Salvador dos próximos 12 dias a partir de hoje: shows, teatro, dança, exposições, festas e feiras culturais.
-Use como fontes as melhores publicações de agenda de Salvador: As Melhores Coisas de Salvador, Roda Cultural, Roteiro Cultural SSA (roteiroculturalssa.com.br), el Cabong (elcabong.com.br), salvadordabahia.com/eventos, agendaculturalsalvador.com.br e ba.gov.br/tca; e as ticketerias filtradas por Salvador: Sympla, Shotgun, Eventim e Ingresse.
+const anoAtual = new Date().getFullYear();
+const prompt = `Você é curador da agenda cultural de Salvador/BA. Hoje é ${hoje} (ano de ${anoAtual}).
+Pesquise na web a programação cultural REAL e ATUAL de Salvador dos próximos 12 dias a partir de hoje: shows, teatro, dança, exposições, festas e feiras culturais.
+IMPORTANTíSSIMO — só use informação de ${anoAtual}: ignore páginas, cartazes, listas e eventos de anos anteriores. Se a data do evento não for claramente de ${anoAtual}, descarte.
+Use APENAS estas fontes (não use nenhuma outra): el Cabong (elcabong.com.br), Roda Cultural, Roteiro Cultural SSA (roteiroculturalssa.com.br), Sympla (sympla.com.br), Pixta, Eventim, Shotgun (shotgun.live) e o site da Prefeitura de Salvador (salvador.ba.gov.br / culturatododia / Pelourinho Dia e Noite).
 Responda SOMENTE com um array JSON válido (sem markdown, sem texto antes ou depois) com 6 a 12 eventos reais. Cada item tem exatamente estes campos:
-{"n":"Nome do evento","cat":"musica|festa|teatro|arte|feira|popular","data":"AAAA-MM-DD","hora":"19h","local":"Local — bairro","preco":"R$45 ou Grátis ou Consultar","desc":"uma frase curta","link":"https://fonte-ou-ingresso"}
-Regras: o campo cat DEVE ser exatamente um destes seis valores minúsculos; data no formato AAAA-MM-DD dentro dos próximos 12 dias; NUNCA invente eventos (se achar poucos confiáveis, retorne poucos); NÃO use emojis. Responda apenas com o array JSON.`;
+{"n":"Nome do evento","cat":"musica|festa|teatro|arte|feira|popular","data":"AAAA-MM-DD","hora":"19h","local":"Local — bairro","preco":"R$45 ou Grátis ou Consultar","desc":"uma frase curta","link":"URL"}
+REGRA DO LINK (obrigatória): o campo link deve apontar SEMPRE para o link direto de INGRESSOS do evento (Sympla, Shotgun, Eventim ou Pixta) OU, quando o evento for gratuito/sem ingresso, para a página EXATA da fonte onde a informação foi encontrada (o artigo/post específico do el Cabong, Roda Cultural, Roteiro Cultural SSA ou da Prefeitura). NUNCA use link de busca do Google, nem a home genérica de um site.
+Outras regras: o campo cat DEVE ser exatamente um destes seis valores minúsculos; data no formato AAAA-MM-DD dentro dos próximos 12 dias e obrigatoriamente de ${anoAtual}; NUNCA invente eventos (se achar poucos confiáveis, retorne poucos); NÃO use emojis. Responda apenas com o array JSON.`;
 
 async function pedirEventos() {
   const req = {
@@ -62,9 +65,10 @@ function dentroDaJanela(d) {
 function normaliza(e) {
   const cat = String(e?.cat || '').toLowerCase();
   if (!CATS.has(cat) || !e?.n || !e?.data || !dentroDaJanela(e.data)) return null;
-  const link = e.link && /^https?:\/\//.test(e.link)
-    ? e.link
-    : 'https://www.google.com/search?q=' + encodeURIComponent((e.n || '') + ' Salvador');
+  // O link tem que ser real (ingresso ou fonte). Recusa busca do Google;
+  // se faltar, cai na página de Salvador do Sympla (referência de ticketeria).
+  const linkOk = e.link && /^https?:\/\//.test(e.link) && !/google\.[a-z.]+\/(search|url)/.test(e.link);
+  const link = linkOk ? e.link : 'https://www.sympla.com.br/eventos/salvador-ba';
   return {
     n: semEmoji(e.n).slice(0, 80),
     cat,
